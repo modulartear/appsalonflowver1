@@ -1,0 +1,48 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // REGLAS BÁSICAS DE SEGURIDAD PARA PRODUCCIÓN
+    // Este proyecto usa Supabase como base de datos principal
+    // Estas reglas son para mantener Firestore seguro si está habilitado
+    
+    // Bloquear todo acceso por defecto
+    // Solo permitir operaciones autenticadas específicas
+    match /{document=**} {
+      // Denegar todo acceso no autenticado
+      allow read, write: if false;
+    }
+    
+    // Si necesitas usar Firestore en el futuro, descomenta y ajusta estas reglas:
+    
+    /*
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Colección de usuarios
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+    
+    // Colección de salones
+    match /salons/{salonId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    // Colección de citas
+    match /appointments/{appointmentId} {
+      allow read: if true;
+      allow create: if true;
+      allow update, delete: if isAuthenticated();
+    }
+    */
+  }
+}
